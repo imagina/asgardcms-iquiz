@@ -18,7 +18,7 @@ class PollTransformer extends Resource
       'status' => $this->when($this->status,$this->status),
       'statusName' => $this->when($this->present()->status,$this->present()->status),
       'questions' => QuestionTransformer::collection($this->whenLoaded('questions')),
-      //'userPolls' => UserPollTransformer::collection($this->whenLoaded('userPolls')),
+      'userPolls' => UserPollTransformer::collection($this->whenLoaded('userPolls')),
       'createdAt' => $this->when($this->created_at,$this->created_at),
       'updatedAt' => $this->when($this->updated_at,$this->updated_at)
     ];

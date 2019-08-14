@@ -8,7 +8,10 @@ class CreateUserQuestionAnswerRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
+        return [
+            'question_id' => 'required',
+            'answer_id' => 'required',
+        ];
     }
 
     public function translationRules()
@@ -23,11 +26,17 @@ class CreateUserQuestionAnswerRequest extends BaseFormRequest
 
     public function messages()
     {
-        return [];
+        return [
+            'question_id.required' => trans('iquiz::common.messages.field required'),
+            'answer_id.required' => trans('iquiz::common.messages.field required'),
+        ];
     }
 
     public function translationMessages()
     {
-        return [];
+        return [
+            'question_id.required' => trans('iquiz::common.messages.field required'),
+            'answer_id.required' => trans('iquiz::common.messages.field required'),
+        ];
     }
 }

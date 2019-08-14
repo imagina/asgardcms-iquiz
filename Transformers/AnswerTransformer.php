@@ -4,30 +4,28 @@ namespace Modules\Iquiz\Transformers;
 
 use Illuminate\Http\Resources\Json\Resource;
 
-class QuestionTransformer extends Resource
+class AnswerTransformer extends Resource
 {
   public function toArray($request)
   {
     $item =  [
       'id' => $this->when($this->id,$this->id),
       'title' => $this->when($this->title,$this->title),
-      'multiple' => $this->when($this->multiple,$this->multiple),
-      'poll_id' => $this->when($this->poll_id,$this->poll_id),
-      'poll' => new PollTransformer($this->whenLoaded('poll')),
-      'answers' => AnswerTransformer::collection($this->whenLoaded('answers')),
+      'question_id' => $this->when($this->question_id,$this->question_id),
+      'question' => new QuestionTransformer($this->whenLoaded('question')),
       'userQuestionAnswers' => UserQuestionAnswerTransformer::collection($this->whenLoaded('userQuestionAnswers')),
       'createdAt' => $this->when($this->created_at,$this->created_at),
       'updatedAt' => $this->when($this->updated_at,$this->updated_at)
     ];
-    
-    // Get Total Votes
+  
+    // Get Votes
     $filter = json_decode($request->filter);
     if (isset($filter->votes)) {
-      $totalVotes = 0;
-      if(($this->userQuestionAnswers) && count($this->userQuestionAnswers)>0){
-        $totalVotes = count($this->userQuestionAnswers);
-      }
-      $item['totalVotes'] = $totalVotes;
+      $votes = 0;
+      if(($this->userQuestionAnswers) && count($this->userQuestionAnswers)>0)
+        $votes = count($this->userQuestionAnswers);
+
+      $item['votes'] = $votes;
     }
 
     return $item;

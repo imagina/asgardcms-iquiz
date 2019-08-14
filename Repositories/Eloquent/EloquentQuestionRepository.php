@@ -53,6 +53,11 @@ class EloquentQuestionRepository extends EloquentBaseRepository implements Quest
             $query->orderBy($orderByField, $orderWay);//Add order to query
         }
 
+         //add filter by poll_id
+        if (isset($filter->pollId)){
+          $query->where('poll_id', $filter->pollId);
+        }
+
       }
 
       /*== FIELDS ==*/

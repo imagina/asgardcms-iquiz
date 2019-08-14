@@ -8,7 +8,9 @@ class CreateUserPollRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
+        return [
+            'poll_id' => 'required',
+        ];
     }
 
     public function translationRules()
@@ -23,11 +25,15 @@ class CreateUserPollRequest extends BaseFormRequest
 
     public function messages()
     {
-        return [];
+        return [
+            'poll_id.required' => trans('iquiz::common.messages.field required'),
+        ];
     }
 
     public function translationMessages()
     {
-        return [];
+        return [
+            'poll_id.required' => trans('iquiz::common.messages.field required'),
+        ];
     }
 }

@@ -22,6 +22,7 @@ return [
         'description is required'=>'La descripción es requerida',
         'description min 2'=>'La descripción debe contener mínimo dos caracteres',
         'error delete' => 'Ha ocurrido un Error',
+        'field required' => 'Este campo es requerido',
     ],
 
     'validation' => [

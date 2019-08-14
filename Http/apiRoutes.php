@@ -11,12 +11,12 @@ $router->group(['prefix' => '/iquiz/v1'], function (Router $router) {
   require('ApiRoutes/questionRoutes.php');
 
   //======  ANSWER
-  //require('ApiRoutes/answerRoutes.php');
+  require('ApiRoutes/answerRoutes.php');
 
   //======  USER QUESTION ANSWER
-  //require('ApiRoutes/userQuestionAnswerRoutes.php');
+  require('ApiRoutes/userQuestionAnswerRoutes.php');
 
   //======  USERS POLLS
-  //require('ApiRoutes/userPollRoutes.php');
+  require('ApiRoutes/userPollRoutes.php');
 
 });
