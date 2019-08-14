@@ -8,7 +8,7 @@ $router->group(['prefix' => '/iquiz/v1'], function (Router $router) {
   require('ApiRoutes/pollRoutes.php');
 
   //======  QUESTIONS
-  //require('ApiRoutes/questionRoutes.php');
+  require('ApiRoutes/questionRoutes.php');
 
   //======  ANSWER
   //require('ApiRoutes/answerRoutes.php');

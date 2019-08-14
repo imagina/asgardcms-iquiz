@@ -8,17 +8,21 @@ use Modules\Core\Repositories\Eloquent\EloquentBaseRepository;
 class EloquentPollRepository extends EloquentBaseRepository implements PollRepository
 {
 
-    public function getItemsBy($params)
+    public function getItemsBy($params = false)
     {
 
       // INITIALIZE QUERY
       $query = $this->model->query();
 
-      // RELATIONSHIPS
-      $defaultInclude = ['translations'];
-      if (isset($params->include))//merge relations with default relationships
-        $includeDefault = array_merge($defaultInclude, $params->include);
-      $query->with(array_merge($defaultInclude, $params->include));
+       /*== RELATIONSHIPS ==*/
+      if (in_array('*', $params->include)) {//If Request all relationships
+        $query->with([]);
+      } else {//Especific relationships
+        $includeDefault = ['translations'];//Default relationships
+        if (isset($params->include))//merge relations with default relationships
+          $includeDefault = array_merge($includeDefault, $params->include);
+        $query->with($includeDefault);//Add Relationships to query
+      }
 
       // FILTERS
       if($params->filter) {
@@ -50,6 +54,13 @@ class EloquentPollRepository extends EloquentBaseRepository implements PollRepos
             $query->where('status', $filter->status);
         }
 
+         //Order by
+        if (isset($filter->order)) {
+          $orderByField = $filter->order->field ?? 'created_at';//Default field
+          $orderWay = $filter->order->way ?? 'desc';//Default way
+          $query->orderBy($orderByField, $orderWay);//Add order to query
+        }
+
       }
 
       /*== FIELDS ==*/
@@ -66,90 +77,99 @@ class EloquentPollRepository extends EloquentBaseRepository implements PollRepos
     
     }
 
-    public function getItem($criteria, $params)
+    public function getItem($criteria, $params = false)
     {
       // INITIALIZE QUERY
       $query = $this->model->query();
 
-      $query->where('id', $criteria);
-
-      // RELATIONSHIPS
-      $includeDefault = [];
-      $query->with(array_merge($includeDefault, $params->include));
-
-      // FIELDS
-      if ($params->fields) {
-        $query->select($params->fields);
+      /*== RELATIONSHIPS ==*/
+      if (in_array('*', $params->include)) {//If Request all relationships
+        $query->with([]);
+      } else {//Especific relationships
+        $includeDefault = ['translations'];//Default relationships
+        if (isset($params->include))//merge relations with default relationships
+          $includeDefault = array_merge($includeDefault, $params->include);
+        $query->with($includeDefault);//Add Relationships to query
       }
+
+      /*== FILTER ==*/
+      if (isset($params->filter)) {
+
+        $filter = $params->filter;
+
+        // find translatable attributes
+        $translatedAttributes = $this->model->translatedAttributes;
+
+        if(isset($filter->field))
+          $field = $filter->field;
+
+        // filter by translatable attributes
+        if (isset($field) && in_array($field, $translatedAttributes))//Filter by slug
+          $query->whereHas('translations', function ($query) use ($criteria, $filter, $field) {
+            $query->where('locale', $filter->locale)
+              ->where($field, $criteria);
+          });
+        else
+          // find by specific attribute or by id
+          $query->where($field ?? 'id', $criteria);
+
+      }
+
+
       return $query->first();
 
     }
 
-    public function create($data)
-    {
-
-        $poll = $this->model->create($data);
-
-        //event(new EventWasCreated($event, $data));
-
-        return $poll;
-    }
-    
-    public function updateBy($criteria, $data, $params){
+    public function updateBy($criteria, $data, $params = false){
 
         // INITIALIZE QUERY
         $query = $this->model->query();
     
-        // FILTER
+        /*== FILTER ==*/
         if (isset($params->filter)) {
           $filter = $params->filter;
-    
-          if (isset($filter->field))//Where field
-            $query->where($filter->field, $criteria);
-          else//where id
-            $query->where('id', $criteria);
+
+          //Update by field
+          if (isset($filter->field))
+            $field = $filter->field;
         }
+
+        /*== REQUEST ==*/
+        $model = $query->where($field ?? 'id', $criteria)->first();
     
-        // REQUEST
-        $model = $query->first();
     
         if($model){
     
           $model->update($data);
           
-          // Event 
-         // event(new EventWasUpdated($model, $data));
         
         }
     
-        return $model;
+        return $model ?? false;
     }
 
-    public function deleteBy($criteria, $params)
+    public function deleteBy($criteria, $params = false)
     {
       // INITIALIZE QUERY
       $query = $this->model->query();
   
-      // FILTER
+      /*== FILTER ==*/
       if (isset($params->filter)) {
         $filter = $params->filter;
-  
-        if (isset($filter->field)) //Where field
-          $query->where($filter->field, $criteria);
-        else //where id
-          $query->where('id', $criteria);
+
+        if (isset($filter->field))//Where field
+          $field = $filter->field;
       }
   
-      // REQUEST
-      $model = $query->first();
-  
+       /*== REQUEST ==*/
+      $model = $query->where($field ?? 'id', $criteria)->first();
+     
       if($model) {
-
-        //event(new EventWasDeleted($model));
 
         $model->delete();
 
       }
+
     }
 
 }

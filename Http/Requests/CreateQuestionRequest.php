@@ -13,7 +13,9 @@ class CreateQuestionRequest extends BaseFormRequest
 
     public function translationRules()
     {
-        return [];
+        return [
+            'title' => 'required|min:2',
+        ];
     }
 
     public function authorize()
@@ -23,11 +25,17 @@ class CreateQuestionRequest extends BaseFormRequest
 
     public function messages()
     {
-        return [];
+        return [
+            'title.required' => trans('iquiz::common.messages.title is required'),
+            'title.min:2'=> trans('iquiz::common.messages.title min 2 '),
+        ];
     }
 
     public function translationMessages()
     {
-        return [];
+        return [
+            'title.required' => trans('iquiz::common.messages.title is required'),
+            'title.min:2'=> trans('iquiz::common.messages.title min 2 '),
+        ];
     }
 }
