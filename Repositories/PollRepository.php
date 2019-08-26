@@ -11,8 +11,5 @@ interface PollRepository extends BaseRepository
   
     public function getItem($criteria, $params);
 
-    public function updateBy($criteria, $data, $params);
-
-    public function deleteBy($criteria, $params);
     
 }

@@ -144,8 +144,14 @@ class PollApiController extends BaseApiController
       $this->validateRequestApi(new UpdatePollRequest($data));
 
       $params = $this->getParamsRequest($request);
+      
+      // Search entity
+      $entity = $this->poll->getItem($criteria,$params);
 
-      $poll = $this->poll->updateBy($criteria,$data,$params);
+      //Break if no found item
+      if (!$entity) throw new \Exception('Item not found', 204);
+
+      $poll = $this->poll->update($entity,$data);
 
       $response = ['data' => new PollTransformer($poll)];
 
@@ -176,7 +182,13 @@ class PollApiController extends BaseApiController
       //Get params
       $params = $this->getParamsRequest($request);
 
-      $this->poll->deleteBy($criteria,$params);
+      // Search entity
+      $entity = $this->poll->getItem($criteria,$params);
+
+      //Break if no found item
+      if (!$entity) throw new \Exception('Item not found', 204);
+
+      $this->poll->destroy($entity);
 
       $response = ['data' => 'Item deleted'];
 

@@ -145,7 +145,13 @@ class UserPollApiController extends BaseApiController
 
       $params = $this->getParamsRequest($request);
 
-      $userPoll = $this->userPoll->updateBy($criteria,$data,$params);
+      // Search entity
+      $entity = $this->userPoll->getItem($criteria,$params);
+
+      //Break if no found item
+      if (!$entity) throw new \Exception('Item not found', 204);
+
+      $userPoll = $this->userPoll->update($entity,$data);
 
       $response = ['data' => new UserPollTransformer($userPoll)];
 
@@ -176,7 +182,13 @@ class UserPollApiController extends BaseApiController
       //Get params
       $params = $this->getParamsRequest($request);
 
-      $this->userPoll->deleteBy($criteria,$params);
+      // Search entity
+      $entity = $this->userPoll->getItem($criteria,$params);
+
+      //Break if no found item
+      if (!$entity) throw new \Exception('Item not found', 204);
+
+      $this->userPoll->destroy($entity);
 
       $response = ['data' => 'Item deleted'];
 

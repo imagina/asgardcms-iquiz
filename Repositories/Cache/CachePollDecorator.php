@@ -37,27 +37,6 @@ class CachePollDecorator extends BaseCacheDecorator implements PollRepository
       return $this->repository->getItem($criteria, $params);
     });
   }
-
-  /**
-   * update a resource
-   *
-   * @return mixed
-   */
-  public function updateBy($criteria, $data, $params)
-  {
-    $this->clearCache();
-    return $this->repository->updateBy($criteria, $data, $params);
-  }
   
-  /**
-   * destroy a resource
-   *
-   * @return mixed
-   */
-  public function deleteBy($criteria, $params)
-  {
-    $this->clearCache();
-    return $this->repository->deleteBy($criteria, $params);
-  }
   
 }
