@@ -54,6 +54,11 @@ class EloquentPollRepository extends EloquentBaseRepository implements PollRepos
             $query->where('status', $filter->status);
         }
 
+        //add filter by poll_id
+        if (isset($filter->pollId)){
+          $query->where('id', $filter->pollId);
+        }
+
          //Order by
         if (isset($filter->order)) {
           $orderByField = $filter->order->field ?? 'created_at';//Default field
