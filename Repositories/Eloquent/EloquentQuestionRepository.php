@@ -58,6 +58,11 @@ class EloquentQuestionRepository extends EloquentBaseRepository implements Quest
           $query->where('poll_id', $filter->pollId);
         }
 
+         //add filter by question_id
+         if (isset($filter->questionId)){
+          $query->where('question_id', $filter->questionId);
+        }
+
       }
 
       /*== FIELDS ==*/
