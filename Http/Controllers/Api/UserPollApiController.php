@@ -179,6 +179,8 @@ class UserPollApiController extends BaseApiController
   {
     try {
 
+      \DB::beginTransaction();
+
       //Get params
       $params = $this->getParamsRequest($request);
 
@@ -191,6 +193,8 @@ class UserPollApiController extends BaseApiController
       $this->userPoll->destroy($entity);
 
       $response = ['data' => 'Item deleted'];
+
+      \DB::commit(); //Commit to Data Base
 
     } catch (\Exception $e) {
 

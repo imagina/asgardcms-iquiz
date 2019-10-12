@@ -66,6 +66,29 @@ class EloquentPollRepository extends EloquentBaseRepository implements PollRepos
           $query->orderBy($orderByField, $orderWay);//Add order to query
         }
 
+        //Random
+        if (isset($filter->random)) {
+          $query->inRandomOrder();
+        }
+
+        //Get All Polls where userId has voted
+        if (isset($filter->userId)) {
+          $userId = $filter->userId;
+          $query->whereHas('userPolls',function ($q) use($userId){
+              $q->where('user_id',$userId);
+          });
+        }
+
+        //Get Polls by id
+        if (isset($filter->include)) {
+          $query->whereIn('id', $filter->include);
+        }
+
+        //Get Polls exclude
+        if (isset($filter->exclude)) {
+          $query->whereNotIn('id', $filter->exclude);
+        }
+
       }
 
       /*== FIELDS ==*/

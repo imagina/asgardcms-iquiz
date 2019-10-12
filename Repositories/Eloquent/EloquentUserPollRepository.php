@@ -49,6 +49,11 @@ class EloquentUserPollRepository extends EloquentBaseRepository implements UserP
           $query->orderBy($orderByField, $orderWay);//Add order to query
         }
 
+         //add filter by user_id
+        if (isset($filter->userId)){
+          $query->where('user_id', $filter->userId);
+        }
+
       }
 
       /*== FIELDS ==*/
