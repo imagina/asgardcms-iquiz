@@ -89,6 +89,11 @@ class EloquentPollRepository extends EloquentBaseRepository implements PollRepos
           $query->whereNotIn('id', $filter->exclude);
         }
 
+        //add filter by logged
+         if (isset($filter->logged)){
+          $query->where('logged', $filter->logged);
+        }
+
       }
 
       /*== FIELDS ==*/
