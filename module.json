@@ -8,7 +8,8 @@
     "order": 1,
     "providers": [
         "Modules\\Iquiz\\Providers\\IquizServiceProvider",
-        "Modules\\Iquiz\\Providers\\RouteServiceProvider"
+        "Modules\\Iquiz\\Providers\\RouteServiceProvider",
+        "Modules\\Iquiz\\Providers\\EventServiceProvider"
     ],
     "aliases": {},
     "files": [
