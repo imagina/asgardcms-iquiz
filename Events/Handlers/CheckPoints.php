@@ -37,6 +37,7 @@ class CheckPoints
                         "user_id"=> (int)$userPoll->user_id,
                         "pointable_id" => (int)$userPoll->poll_id,
                         "pointable_type" => $class,
+                        "type" => "poll-completed",
                         "points" => (int)$pointsPoll,
                         "description" => trans("iredeems::common.settingsMsg.points-per-poll")
                     );
