@@ -21,6 +21,8 @@ class CreateIquizPollsTable extends Migration
             $table->boolean('logged')->default(false)->unsigned();
             $table->tinyInteger('status')->default(1)->unsigned();
 
+            $table->integer('store_id')->unsigned()->nullable();
+
             $table->timestamps();
         });
     }

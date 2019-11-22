@@ -90,8 +90,13 @@ class EloquentPollRepository extends EloquentBaseRepository implements PollRepos
         }
 
         //add filter by logged
-         if (isset($filter->logged)){
+        if (isset($filter->logged)){
           $query->where('logged', $filter->logged);
+        }
+
+        //add filter by storeId
+        if (isset($filter->storeId)){
+          $query->where('store_id', $filter->storeId);
         }
 
       }

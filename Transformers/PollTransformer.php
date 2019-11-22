@@ -15,6 +15,7 @@ class PollTransformer extends Resource
       'startDate' => $this->when($this->start_date,$this->start_date),
       'endDate' => $this->when($this->end_date,$this->end_date),
       'logged' => $this->when($this->logged,$this->logged),
+      'storeId' => $this->when($this->store_id,$this->store_id),
       'status' => $this->when($this->status,$this->status),
       'statusName' => $this->when($this->present()->status,$this->present()->status),
       'questions' => QuestionTransformer::collection($this->whenLoaded('questions')),
